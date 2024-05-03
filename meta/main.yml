@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  author: thulium_drake
+  description: iPXE Netboot server
+  role_name: netboot_server
+
+  license: GPLv3
+
+  min_ansible_version: '2.10'
+
+  platforms:
+    - name: EL
+      versions:
+        - '8'
+    - name: Fedora
+      versions:
+        - '40'
+
+  galaxy_tags:
+    - ipxe
+    - netboot
+    - pxeboot
+
+dependencies: []

@@ -1,0 +1,45 @@
+# {{ ansible_managed }}
+default-lease-time 43200;
+max-lease-time 86400;
+
+not authoritative;
+
+ddns-update-style none;
+option ntp-servers none;
+option domain-name-servers {{ netboot_dns_server }};
+option domain-name "{{ netboot_domain_name }}";
+
+allow booting;
+allow bootp;
+
+option fqdn.no-client-update    on;  # set the "O" and "S" flag bits
+option fqdn.rcode2            255;
+option pxegrub code 150 = text ;
+
+log-facility local7;
+
+option architecture code 93 = unsigned integer 16 ;
+if exists user-class and option user-class = "iPXE" {
+  filename "http://{{ netboot_server_ip }}/ipxe/main.ipxe";
+} elsif option architecture = 00:06 {
+  filename "ipxe.efi";
+} elsif option architecture = 00:07 {
+  filename "ipxe.efi";
+} elsif option architecture = 00:09 {
+  filename "ipxe.efi";
+} else {
+  filename "undionly.kpxe";
+}
+
+next-server {{ netboot_server_ip }};
+subnet {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('network') }} netmask {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('netmask') }} {
+  pool
+  {
+    range {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('net') | ansible.utils.ipaddr('20') | ansible.utils.ipaddr('address') }} {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('net') | ansible.utils.ipaddr('50') | ansible.utils.ipaddr('address') }};
+  }
+
+  option subnet-mask {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('netmask') }};
+  {% if netboot_server_router | length > 0 %}
+  option routers {{ netboot_server_router }};
+  {% endif %}
+}

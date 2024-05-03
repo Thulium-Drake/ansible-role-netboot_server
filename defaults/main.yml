@@ -1,0 +1,24 @@
+---
+# yamllint disable rule:line-length
+# Network information for DHCP server
+netboot_dns_server: '9.9.9.9'
+netboot_domain_name: 'deploy.example.nl'
+netboot_server_ip: '192.168.123.1'
+netboot_server_router: '192.168.123.254'  # Can be left empty for networks that do not have a router
+netboot_server_dhcp_subnet: '192.168.123.0/24'
+
+# Contact information on the Help iPXE menu page
+netboot_server_help_email: 'deployhelp@example.nl'
+netboot_server_help_phone: '+31 6 123 456 78'
+
+# Images that will be synced to the server
+netboot_server_images: []
+# - name: 'edge'                                          # Name of the iPXE menu item
+#   src_url: "user@host.example.nl:/var/www/html/edge"    # Rsync URI to download the sources from
+#   ipxe_url: 'http://host.example.lab/ipxe/edge.ipxe'    # URL where the iPXE menu file can be found
+#   description: 'Device Edge OS'                         # Readable name of the iPXE menu item
+# - src_url: "user@host.example.nl:/var/www/html/rhel-9"
+
+netboot_server_memtest_bin_url: 'https://www.memtest.org/download/v7.00/mt86plus_7.00.binaries.zip'
+netboot_server_shredos_iso_url: 'https://github.com/PartialVolume/shredos.x86_64/releases/download/v2023.08.2_25.0_x86-64_0.35/shredos-2023.08.2_25.0_x86-64_0.35_20240207.iso'
+netboot_server_extra_utils: []

@@ -1,0 +1,47 @@
+#!ipxe
+# {{ ansible_managed }}
+:main_menu
+clear menu
+set space:hex 20:20
+set space ${space:string}
+
+isset ${next-server} && menu Deployment Server menu - boot server: ${next-server} || menu Deployment Server menu
+item --gap Default:
+item local ${space} Boot from local hdd
+item --gap OS images:
+{% for image_type in netboot_server_images | rejectattr('name', 'undefined') %}
+item {{ image_type['name'] }} ${space} {{ image_type['description'] }}
+{% endfor %}
+item --gap Utilities:
+item memtest86plus ${space} Memtest86+
+item shredos ${space} ShredOS Disk Sanitizer
+{% for util in netboot_server_extra_utils %}
+item {{ util['menu'] }} ${space} {{ util['description'] }}
+{% endfor %}
+item help Help
+choose --default ${menu} menu || goto local
+goto ${menu} ||
+goto change_menu
+
+:change_menu
+chain ${menu}.ipxe || goto error
+goto main_menu
+
+:error
+echo Error occured, press any key to return to menu ...
+prompt
+goto main_menu
+
+:local
+echo Booting from local disks ...
+exit 1
+
+:memtest86plus
+imgfree
+kernel http://${next-server}/ipxe/utils/memtest64.efi
+boot
+goto utils_menu
+
+# Exit
+:exit
+exit

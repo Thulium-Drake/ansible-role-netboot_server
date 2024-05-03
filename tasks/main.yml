@@ -1,0 +1,115 @@
+---
+- name: 'Install dependencies'
+  ansible.builtin.package:
+    name:
+      - 'dhcp-server'
+      - 'httpd'
+      - 'ipxe-bootimgs-x86'
+      - 'rsync'
+      - 'tftp-server'
+      - 'unzip'
+    state: 'present'
+
+- name: 'Ensure directories'
+  ansible.builtin.file:
+    path: "{{ dir }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+    state: 'directory'
+  loop:
+    - '/var/www/html/ipxe/utils/shredos'
+    - '/var/cache/netboot_server'
+  loop_control:
+    loop_var: 'dir'
+
+- name: 'Render configuration files'
+  ansible.builtin.template:
+    src: "{{ conf_template['name'] }}.j2"
+    dest: "{{ conf_template['path'] }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: 'Restart dhcpd'
+  loop:
+    - name: 'dhcpd.conf'
+      path: '/etc/dhcp/dhcpd.conf'
+    - name: 'help.ipxe'
+      path: '/var/www/html/ipxe/help.ipxe'
+    - name: 'main.ipxe'
+      path: '/var/www/html/ipxe/main.ipxe'
+  loop_control:
+    loop_var: 'conf_template'
+
+- name: 'Copy configuration files'
+  ansible.builtin.copy:
+    src: "{{ conf_file['src'] }}"
+    dest: "{{ conf_file['dest'] }}"
+    owner: 'root'
+    group: 'root'
+    mode: 'preserve'
+    remote_src: "{{ conf_file['remote_src'] | default(true) }}"
+  loop:
+    - src: 'shredos.ipxe'
+      dest: '/var/www/html/ipxe/shredos.ipxe'
+      remote_src: false
+    - src: '/usr/share/ipxe/ipxe-x86_64.efi'
+      dest: '/var/lib/tftpboot/ipxe.efi'
+    - src: '/usr/share/ipxe/undionly.kpxe'
+      dest: '/var/lib/tftpboot/undionly.kpxe'
+  loop_control:
+    loop_var: 'conf_file'
+
+- name: 'Download Memtest86+'
+  ansible.builtin.unarchive:
+    src: "{{ netboot_server_memtest_bin_url }}"
+    dest: '/var/www/html/ipxe/utils'
+    remote_src: true
+
+- name: 'Download ShredOS ISO'
+  ansible.builtin.get_url:
+    url: "{{ netboot_server_shredos_iso_url }}"
+    dest: '/var/cache/netboot_server/shredos.iso'
+    force: false
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Extract ShredOS live image from ISO'
+  community.general.iso_extract:
+    image: '/var/cache/netboot_server/shredos.iso'
+    dest: '/var/www/html/ipxe/utils/shredos'
+    files:
+      - 'boot/bzImage'
+
+- name: 'Ensure services'
+  ansible.builtin.service:
+    name: "{{ service }}"
+    state: 'started'
+    enabled: true
+  loop:
+    - 'dhcpd.service'
+    - 'httpd.service'
+    - 'tftp.socket'
+  loop_control:
+    loop_var: 'service'
+
+- name: 'Sync image repositories'
+  ansible.builtin.shell: |
+    set -o pipefail
+    rsync -qa --exclude */.lock {{ image['src_url'] }} /var/www/html/
+  changed_when: true
+  loop: "{{ netboot_server_images }}"
+  loop_control:
+    loop_var: 'image'
+
+- name: 'Ensure image iPXE menus'
+  ansible.builtin.get_url:
+    url: "{{ ipxe_menu['ipxe_url'] }}"
+    dest: "/var/www/html/ipxe/{{ ipxe_menu['name'] }}.ipxe"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop: "{{ netboot_server_images | rejectattr('ipxe_url', 'undefined') }}"
+  loop_control:
+    loop_var: 'ipxe_menu'

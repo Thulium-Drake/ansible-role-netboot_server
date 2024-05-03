@@ -1,0 +1,19 @@
+#!ipxe
+# This file is managed by Ansible, your changes will be lost!
+
+:netabout
+menu About Device Edge Image Deployer
+item exit Exit back to main menu...
+item --gap --  --Helpdesk contact information-------------------------------------------
+item about email: {{ netboot_server_help_email }}
+item about phone: {{ netboot_server_help_phone }}
+choose selected || goto exit
+goto ${selected}
+
+:about
+clear menu
+goto netabout
+
+:exit
+clear menu
+exit
