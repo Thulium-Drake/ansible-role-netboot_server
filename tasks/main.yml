@@ -99,11 +99,11 @@
     set -o pipefail
     rsync -qa --exclude */.lock {{ image['src_url'] }} /var/www/html/
   changed_when: true
-  loop: "{{ netboot_server_images }}"
+  loop: "{{ netboot_server_images | rejectattr('src_url', 'undefined') }}"
   loop_control:
     loop_var: 'image'
 
-- name: 'Ensure image iPXE menus'
+- name: 'Download remote iPXE menus'
   ansible.builtin.get_url:
     url: "{{ ipxe_menu['ipxe_url'] }}"
     dest: "/var/www/html/ipxe/{{ ipxe_menu['name'] }}.ipxe"

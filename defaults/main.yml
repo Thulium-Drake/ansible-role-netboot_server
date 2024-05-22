@@ -17,8 +17,10 @@ netboot_server_images: []
 #   src_url: "user@host.example.nl:/var/www/html/edge"    # Rsync URI to download the sources from
 #   ipxe_url: 'http://host.example.lab/ipxe/edge.ipxe'    # URL where the iPXE menu file can be found
 #   description: 'Device Edge OS'                         # Readable name of the iPXE menu item
-# - src_url: "user@host.example.nl:/var/www/html/rhel-9"
+# - src_url: "user@host.example.nl:/var/www/html/rhel-9"  # This entry is used to sync the OS installer files
+#   description: 'OS installer files for Edge images'     # required to install the 'edge' image
 
+# URLs where to download the desired versions of Memtest and ShredOS
+# When changing the URLs, take note of the download type for each tool
 netboot_server_memtest_bin_url: 'https://www.memtest.org/download/v7.00/mt86plus_7.00.binaries.zip'
 netboot_server_shredos_iso_url: 'https://github.com/PartialVolume/shredos.x86_64/releases/download/v2023.08.2_25.0_x86-64_0.35/shredos-2023.08.2_25.0_x86-64_0.35_20240207.iso'
-netboot_server_extra_utils: []
