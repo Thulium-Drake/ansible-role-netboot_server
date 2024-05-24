@@ -102,6 +102,8 @@
   loop: "{{ netboot_server_images | rejectattr('src_url', 'undefined') }}"
   loop_control:
     loop_var: 'image'
+  tags:
+    - 'sync'
 
 - name: 'Download remote iPXE menus'
   ansible.builtin.get_url:
@@ -113,3 +115,5 @@
   loop: "{{ netboot_server_images | rejectattr('ipxe_url', 'undefined') }}"
   loop_control:
     loop_var: 'ipxe_menu'
+  tags:
+    - 'sync'
