@@ -97,7 +97,7 @@
 - name: 'Sync image repositories'
   ansible.builtin.shell: |
     set -o pipefail
-    rsync -qa --exclude */.lock {{ image['src_url'] }} /var/www/html/
+    rsync -qa --delete --exclude */.lock {{ image['src_url'] }} /var/www/html/
   changed_when: true
   loop: "{{ netboot_server_images | rejectattr('src_url', 'undefined') }}"
   loop_control:
