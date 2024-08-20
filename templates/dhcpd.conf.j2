@@ -8,6 +8,7 @@ ddns-update-style none;
 option ntp-servers none;
 option domain-name-servers {{ netboot_dns_server }};
 option domain-name "{{ netboot_domain_name }}";
+option domain-search "{{ netboot_domain_search }}";
 
 allow booting;
 allow bootp;
@@ -35,7 +36,7 @@ next-server {{ netboot_server_ip }};
 subnet {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('network') }} netmask {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('netmask') }} {
   pool
   {
-    range {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('net') | ansible.utils.ipaddr('20') | ansible.utils.ipaddr('address') }} {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('net') | ansible.utils.ipaddr('50') | ansible.utils.ipaddr('address') }};
+    range {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(netboot_server_dhcp_range_start) | ansible.utils.ipaddr('address') }} {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(netboot_server_dhcp_range_end) | ansible.utils.ipaddr('address') }};
   }
 
   option subnet-mask {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('netmask') }};
@@ -43,3 +44,7 @@ subnet {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('network') }} netmas
   option routers {{ netboot_server_router }};
   {% endif %}
 }
+
+{% for include in netboot_server_dhcp_includes %}
+include "{{ include }}";
+{% endfor %}

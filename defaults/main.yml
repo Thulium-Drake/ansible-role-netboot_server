@@ -1,13 +1,16 @@
 ---
 # yamllint disable rule:line-length
 # Network information for DHCP server
-netboot_dns_server: '9.9.9.9'
+netboot_dns_server: '9.9.9.9'  # comma separated if you have multiple
 netboot_domain_name: 'deploy.example.nl'
 netboot_server_ip: '192.168.123.1'
 netboot_server_router: '192.168.123.254'  # Can be left empty for networks that do not have a router
 netboot_server_dhcp_subnet: '192.168.123.0/24'
+netboot_server_dhcp_range_start: '20'
+netboot_server_dhcp_range_end: '50'
 
-# Contact information on the Help iPXE menu page
+# Contact information on the Help iPXE menu page, when enabled
+netboot_server_help_page: true
 netboot_server_help_email: 'deployhelp@example.nl'
 netboot_server_help_phone: '+31 6 123 456 78'
 
@@ -19,6 +22,8 @@ netboot_server_images: []
 #   description: 'Device Edge OS'                         # Readable name of the iPXE menu item
 # - src_url: "user@host.example.nl:/var/www/html/rhel-9"  # This entry is used to sync the OS installer files
 #   description: 'OS installer files for Edge images'     # required to install the 'edge' image
+# - name: 'fedora'
+#   ipxe_file: 'fedora.ipxe'                              # If the file is provided in the Ansible project
 
 # URLs where to download the desired versions of Memtest and ShredOS
 # When changing the URLs, take note of the download type for each tool

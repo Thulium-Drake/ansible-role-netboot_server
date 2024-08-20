@@ -1,13 +1,17 @@
 ---
+- name: 'Include OS specific vars'
+  ansible.builtin.include_vars: "{{ lookup('first_found', role_vars_files) }}"
+  vars:
+    role_vars_files:
+      files:
+        - "{{ ansible_facts['os_family'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+        - "{{ ansible_facts['os_family'] }}.yml"
+      paths:
+        - 'vars'
+
 - name: 'Install dependencies'
   ansible.builtin.package:
-    name:
-      - 'dhcp-server'
-      - 'httpd'
-      - 'ipxe-bootimgs-x86'
-      - 'rsync'
-      - 'tftp-server'
-      - 'unzip'
+    name: "{{ netboot_server_packages }}"
     state: 'present'
 
 - name: 'Ensure directories'
@@ -104,6 +108,17 @@
     loop_var: 'image'
   tags:
     - 'sync'
+
+- name: 'Ensure local iPXE menus'
+  ansible.builtin.copy:
+    src: "{{ ipxe_menu['ipxe_file'] }}"
+    dest: "/var/www/html/ipxe/{{ ipxe_menu['name'] }}.ipxe"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop: "{{ netboot_server_images | rejectattr('ipxe_file', 'undefined') }}"
+  loop_control:
+    loop_var: 'ipxe_menu'
 
 - name: 'Download remote iPXE menus'
   ansible.builtin.get_url:
