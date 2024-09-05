@@ -12,9 +12,7 @@ galaxy_info:
     - name: EL
       versions:
         - '8'
-    - name: Fedora
-      versions:
-        - '40'
+        - '9'
 
   galaxy_tags:
     - ipxe

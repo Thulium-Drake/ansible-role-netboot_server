@@ -15,7 +15,7 @@ item {{ image_type['name'] }} ${space} {{ image_type['description'] }}
 item --gap Utilities:
 item memtest86plus ${space} Memtest86+
 item shredos ${space} ShredOS Disk Sanitizer
-{% if netboot_server_help_page %}item help Help{%endif %}
+{% if netboot_server_help_page %}item help Help and system information{%endif %}
 
 choose --default ${menu} menu || goto local
 goto ${menu} ||
