@@ -10,7 +10,7 @@ item --gap Default:
 item local ${space} Boot from local hdd
 item --gap OS images:
 {% for image_type in netboot_server_images | rejectattr('name', 'undefined') %}
-item {{ image_type['name'] }} ${space} {{ image_type['description'] }}
+item {{ image_type['name'] }} ${space} {{ image_type['description'] | default('') }}
 {% endfor %}
 item --gap Utilities:
 item memtest86plus ${space} Memtest86+
