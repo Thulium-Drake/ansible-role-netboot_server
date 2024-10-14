@@ -79,6 +79,7 @@
   ansible.builtin.unarchive:
     src: '/var/cache/netboot_server/memtest86.zip'
     dest: '/var/www/html/ipxe/utils'
+    remote_src: true
 
 - name: 'Download ShredOS ISO'
   ansible.builtin.get_url:
