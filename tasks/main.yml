@@ -65,14 +65,26 @@
     loop_var: 'conf_file'
 
 - name: 'Download Memtest86+'
+  ansible.builtin.get_url:
+    url: "{{ netboot_server_memtest_bin_url }}"
+    url_username: "{{ netboot_server_memtest_bin_username | default(omit, true) }}"
+    url_password: "{{ netboot_server_memtest_bin_password | default(omit, true) }}"
+    dest: '/var/cache/edge_image_builder/memtest86.zip'
+    force: false
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Extract Memtest86+'
   ansible.builtin.unarchive:
-    src: "{{ netboot_server_memtest_bin_url }}"
+    src: '/var/cache/edge_image_builder/memtest86.zip'
     dest: '/var/www/html/ipxe/utils'
-    remote_src: true
 
 - name: 'Download ShredOS ISO'
   ansible.builtin.get_url:
     url: "{{ netboot_server_shredos_iso_url }}"
+    url_username: "{{ netboot_server_shresos_iso_username | default(omit, true) }}"
+    url_password: "{{ netboot_server_shredos_iso_password | default(omit, true) }}"
     dest: '/var/cache/netboot_server/shredos.iso'
     force: false
     owner: 'root'
