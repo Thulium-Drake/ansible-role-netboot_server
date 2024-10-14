@@ -27,6 +27,17 @@
   loop_control:
     loop_var: 'dir'
 
+- name: 'Ensure dhcpd include files'
+  ansible.builtin.copy:
+    src: "{{ dhcpd_include['src'] }}"
+    dest: "{{ dhcpd_include['dest'] }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop: "{{ netboot_server_dhcp_includes | default([]) }}"
+  loop_control:
+    loop_var: 'dhcpd_include'
+
 - name: 'Render configuration files'
   ansible.builtin.template:
     src: "{{ conf_template['name'] }}.j2"

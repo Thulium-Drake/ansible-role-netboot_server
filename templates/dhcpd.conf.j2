@@ -45,6 +45,6 @@ subnet {{ netboot_server_dhcp_subnet | ansible.utils.ipaddr('network') }} netmas
   {% endif %}
 }
 
-{% for include in netboot_server_dhcp_includes %}
-include "{{ include }}";
+{% for include in netboot_server_dhcp_includes | default([]) %}
+include "{{ include['dest'] }}";
 {% endfor %}

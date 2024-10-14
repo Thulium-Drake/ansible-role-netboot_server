@@ -9,8 +9,11 @@ netboot_server_router: '192.168.123.254'  # Can be left empty for networks that 
 netboot_server_dhcp_subnet: '192.168.123.0/24'
 netboot_server_dhcp_range_start: '20'
 netboot_server_dhcp_range_end: '50'
+
 # Paths to extra files to be included in the DHCP config file
 netboot_server_dhcp_includes: []
+# - src: 'files/dhcp-include.conf'
+#   dest: '/etc/dhcpd/dhcp-include.conf'
 
 # Contact information on the Help iPXE menu page, when enabled
 netboot_server_help_page: true
