@@ -122,6 +122,16 @@
   loop_control:
     loop_var: 'service'
 
+- name: 'Ensure ssh config to accept new hostkeys'
+  ansible.builtin.copy:
+    dest: '/root/.ssh/config'
+    content: |
+      Host *
+      StrictHostKeyChecking accept-new
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+
 - name: 'Sync image repositories'
   ansible.builtin.shell: |
     set -o pipefail
