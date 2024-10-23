@@ -27,6 +27,14 @@
   loop_control:
     loop_var: 'dir'
 
+- name: 'Ensure Apache config'
+  ansible.builtin.template:
+    src: 'apache-httpd-vhost.conf.j2'
+    dest: '/etc/httpd/conf.d/netboot-server.conf'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
 - name: 'Ensure dhcpd include files'
   ansible.builtin.copy:
     src: "{{ dhcpd_include['src'] }}"

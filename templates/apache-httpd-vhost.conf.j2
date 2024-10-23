@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+<VirtualHost *:80>
+  ServerName {{ netboot_server_name }}
+
+  <Directory /var/www/html>
+    Options +FollowSymLinks
+    Require all granted
+  </Directory>
+
+  ErrorLog /var/log/httpd/{{ netboot_server_name }}_error.log
+  CustomLog /var/log/httpd/{{ netboot_server_name }}_access.log common
+</VirtualHost>
