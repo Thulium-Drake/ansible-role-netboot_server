@@ -1,6 +1,7 @@
 # {{ ansible_managed }}
 <VirtualHost *:80>
   ServerName {{ netboot_server_name }}
+  DocumentRoot /var/www/html
 
   <Directory /var/www/html>
     Options +FollowSymLinks
