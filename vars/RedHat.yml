@@ -3,6 +3,7 @@ netboot_server_packages:
   - 'dhcp-server'
   - 'httpd'
   - 'ipxe-bootimgs-x86'
+  - 'python3-netaddr'
   - 'rsync'
   - 'tftp-server'
   - 'unzip'
