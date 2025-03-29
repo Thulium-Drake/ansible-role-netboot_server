@@ -11,6 +11,9 @@ netboot_server_dhcp_subnet: '192.168.123.0/24'
 netboot_server_dhcp_range_start: '20'
 netboot_server_dhcp_range_end: '50'
 
+# Disable in case you have a special SSH client configuration
+netboot_server_manage_ssh_config: true
+
 # Paths to extra files to be included in the DHCP config file
 netboot_server_dhcp_includes: []
 # - src: 'files/dhcp-include.conf'

@@ -139,6 +139,7 @@
     owner: 'root'
     group: 'root'
     mode: '0600'
+  when: netboot_server_manage_ssh_config
 
 - name: 'Sync image repositories'
   ansible.builtin.shell: |
