@@ -1,0 +1,34 @@
+# {{ ansible_managed }}
+<VirtualHost *:80>
+  ServerName {{ netboot_server_name }}
+  DocumentRoot /var/www/html
+
+  <Directory /var/www/html>
+    Options +FollowSymLinks
+    Require all granted
+  </Directory>
+
+  ErrorLog /var/log/httpd/{{ netboot_server_name }}_error.log
+  CustomLog /var/log/httpd/{{ netboot_server_name }}_access.log common
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName {{ netboot_server_name }}
+
+  SSLEngine on
+
+  SSLCertificateFile {{ netboot_server_cert }}
+  SSLCertificateKeyFile {{ netboot_server_key }}
+
+  DocumentRoot /var/www/html
+
+  <Directory /var/www/html>
+    Options +FollowSymLinks
+    Require all granted
+  </Directory>
+
+  {% if netboot_server_hsts %}Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains" {% endif %}
+
+  ErrorLog /var/log/httpd/{{ netboot_server_name }}_error.log
+  CustomLog /var/log/httpd/{{ netboot_server_name }}_access.log common
+</VirtualHost>

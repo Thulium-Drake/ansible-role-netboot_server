@@ -12,7 +12,7 @@ netboot_server_dhcp_range_start: '20'
 netboot_server_dhcp_range_end: '50'
 
 # Webserver settings
-netboot_server_type: 'nonssl'  # or 'ssl'
+netboot_server_type: 'nonssl'  # or 'ssl' or 'both'
 netboot_server_cert: '/etc/ssl/server.crt'
 netboot_server_key: '/etc/ssl/server.key'
 netboot_server_hsts: false
