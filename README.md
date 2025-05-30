@@ -6,6 +6,7 @@ This role will configure:
   * DHCP for network addressing and configuration
   * TFTP to deploy the iPXE bootloader
   * HTTP to serve iPXE menus and OS images that are to be deployed
+    * By default the server will not use SSL, this can be enabled
 
 The following tools are also automatically provided for system diagnosis/decommissioning:
 

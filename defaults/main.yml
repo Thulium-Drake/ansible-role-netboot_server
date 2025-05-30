@@ -11,6 +11,12 @@ netboot_server_dhcp_subnet: '192.168.123.0/24'
 netboot_server_dhcp_range_start: '20'
 netboot_server_dhcp_range_end: '50'
 
+# Webserver settings
+netboot_server_type: 'nonssl'  # or 'ssl'
+netboot_server_cert: '/etc/ssl/server.crt'
+netboot_server_key: '/etc/ssl/server.key'
+netboot_server_hsts: false
+
 # Disable in case you have a special SSH client configuration
 netboot_server_manage_ssh_config: true
 

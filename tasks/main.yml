@@ -29,7 +29,7 @@
 
 - name: 'Ensure Apache config'
   ansible.builtin.template:
-    src: 'apache-httpd-vhost.conf.j2'
+    src: "apache-httpd-vhost-{{ netboot_server_type }}.conf.j2"
     dest: '/etc/httpd/conf.d/netboot-server.conf'
     owner: 'root'
     group: 'root'
