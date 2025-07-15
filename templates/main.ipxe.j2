@@ -5,7 +5,7 @@ clear menu
 set space:hex 20:20
 set space ${space:string}
 
-isset ${next-server} && menu Deployment Server menu - boot server: ${next-server} || menu Deployment Server menu
+menu Deployment Server menu - boot server: {{ netboot_server_name }}
 item --gap Default:
 item local ${space} Boot from local hdd
 item --gap OS images:
@@ -36,7 +36,7 @@ exit 1
 
 :memtest86plus
 imgfree
-kernel http://${next-server}/ipxe/utils/memtest64.efi
+kernel {{ netboot_server_protocol }}://{{ netboot_server_name }}/ipxe/utils/memtest64.efi
 boot
 goto utils_menu
 

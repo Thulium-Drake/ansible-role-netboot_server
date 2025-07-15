@@ -5,6 +5,7 @@ netboot_dns_server: '9.9.9.9'  # comma separated if you have multiple
 netboot_domain_name: 'deploy.example.nl'
 netboot_domain_search: 'deploy.example.nl'
 netboot_server_name: 'srv.deploy.example.nl'
+netboot_server_protocol: 'http'  # or https
 netboot_server_ip: '192.168.123.1'
 netboot_server_router: '192.168.123.254'  # Can be left empty for networks that do not have a router
 netboot_server_dhcp_subnet: '192.168.123.0/24'
