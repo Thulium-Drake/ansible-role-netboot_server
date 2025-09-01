@@ -17,7 +17,7 @@ item memtest86plus ${space} Memtest86+
 item shredos ${space} ShredOS Disk Sanitizer
 {% if netboot_server_help_page %}item help Help and system information{%endif %}
 
-choose --default ${menu} menu || goto local
+choose --timeout 10000 --default ${menu} menu || goto menu
 goto ${menu} ||
 goto change_menu
 
